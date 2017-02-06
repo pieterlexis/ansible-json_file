@@ -46,6 +46,10 @@ options:
      - the value to be associated with the I(key). May be omitted when removing a I(key).
     required: false
     default: null
+  as_string:
+    description:
+    - should the I(value) be added as a string?
+    default: false
   backup:
     description:
       - Create a backup file including the timestamp information so you can get
@@ -103,7 +107,7 @@ def _json_dumps(s):
     """ Returns the JSON-serialized version of `s` as a str"""
     return json.dumps(s, indent=2, separators=(',', ': '), sort_keys=True)
 
-def do_json(module, filename, key, value=None, state='present', create=False, backup=False):
+def do_json(module, filename, key, value=None, as_string=False, state='present', create=False, backup=False):
     diff = {'before': '',
             'after': ''}
 
@@ -151,7 +155,9 @@ def do_json(module, filename, key, value=None, state='present', create=False, ba
             # it was already gone
             pass
     elif state == 'present':
-        val = _to_type(value)
+        val = value
+        if not as_string:
+            val = _to_type(value)
         if parts[-1] not in ref:
             ref[parts[-1]] = val
             changed = True
@@ -185,6 +191,7 @@ def main():
             dest=dict(required=True),
             key=dict(required=True),
             value=dict(required=False),
+            as_string=dict(default='no', type='bool'),
             backup=dict(default='no', type='bool'),
             state=dict(default='present', choices=['present', 'absent']),
             create=dict(default=True, type='bool')
@@ -199,8 +206,9 @@ def main():
     state = module.params['state']
     backup = module.params['backup']
     create = module.params['create']
+    as_string = module.params['as_string']
 
-    (changed, backup_file, diff, msg) = do_json(module, dest, key, value, state, create, backup)
+    (changed, backup_file, diff, msg) = do_json(module, dest, key, value, as_string, state, create, backup)
 
     if not module.check_mode and os.path.exists(dest):
         file_args = module.load_file_common_arguments(module.params)

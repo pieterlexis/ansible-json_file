@@ -75,6 +75,20 @@ Set `value` to `None` to accomplish this:
         value: None
 ```
 
+Sometimes, a number must be saved as a string in the resulting JSON file.
+Setting the `as_string` argument to 'yes' will ensure this:
+
+```yaml
+- hosts: all
+  tasks:
+    - name: Set 'foo' to "25"
+      json_file:
+        dest: /etc/file.conf
+        key: 'foo'
+        value: 25
+        as_string: yes
+```
+
 This module supports all arguments supported by the [Ansible file](http://docs.ansible.com/ansible/file_module.html) module (like 'owner', 'group', 'mode' etcetera).
 
 Acknowledgements

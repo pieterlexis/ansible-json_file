@@ -81,3 +81,15 @@
       with_items:
         - { 'key': 'a\.b', 'value': 'bar' }
         - { 'key': 'd.a\.b', 'value': 'buzz' }
+
+    - name: Add different types, as string
+      json_file:
+        dest: '/tmp/10.json'
+        key: '{{ item.key }}'
+        value: '{{ item.value }}'
+        as_string: yes
+      with_items:
+        - { 'key': 'integer', 'value': 25 }
+        - { 'key': 'bool1', 'value': true }
+        - { 'key': 'bool2', 'value': false }
+        - { 'key': 'should_be_null', 'value': None }

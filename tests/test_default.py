@@ -80,3 +80,16 @@ def test_dotted(Command):
             'a.b': 'buzz'
         }
     }
+
+def test_types_as_string(Command):
+    stdout = Command("cat /tmp/10.json").stdout
+    data = json.loads(stdout)
+
+    assert data == {
+        'a': 'b',
+        'c': {'d': 'e'},
+        'integer': '25',
+        'bool1': 'True',
+        'bool2': 'False',
+        'should_be_null': 'None'
+    }
