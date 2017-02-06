@@ -3,6 +3,8 @@ Ansible Library: json_file
 
 A library module that allows modifying json files
 
+[![Build Status](https://travis-ci.org/pieterlexis/ansible-json_file.svg?branch=master)](https://travis-ci.org/pieterlexis/ansible-json_file)
+
 Requirements
 ------------
 
