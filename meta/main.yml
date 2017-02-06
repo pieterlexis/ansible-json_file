@@ -1,7 +1,7 @@
 galaxy_info:
   author: Pieter Lexis
   description: Library module to manipulate JSON files without the use of templates or files
-  issue_tracker_url: http://github.com/pieterlexis/ansible-json_file
+  issue_tracker_url: https://github.com/pieterlexis/ansible-json_file/issues
   license: MIT
 
   min_ansible_version: 1.2
