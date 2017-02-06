@@ -15,6 +15,7 @@ galaxy_info:
     - all
   - name: MacOSX
     versions:
+    - all
   - name: Amazon
     versions:
     - all
