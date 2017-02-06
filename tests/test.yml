@@ -1,0 +1,83 @@
+---
+- hosts: all
+  tasks:
+    - name: Generate starter files
+      copy:
+        dest: '/tmp/{{ item }}.json'
+        content: '{ "a": "b", "c": { "d": "e" } }'
+        force: no
+      with_sequence: start=0 end=10
+
+    - name: Change top-level value
+      json_file:
+        dest: '/tmp/0.json'
+        key: 'a'
+        value: 'e'
+
+    - name: Change top-level dict to a single value
+      json_file:
+        dest: '/tmp/0.json'
+        key: 'c'
+        value: 'f'
+
+    - name: Change second-level value
+      json_file:
+        dest: '/tmp/1.json'
+        key: 'c.d'
+        value: 'f'
+
+    - name: Add new key+value to second-level
+      json_file:
+        dest: '/tmp/2.json'
+        key: 'c.e'
+        value: 'f'
+
+    - name: Add new second-level key+value
+      json_file:
+        dest: '/tmp/3.json'
+        key: 'e.f'
+        value: 'g'
+
+    - name: Remove top-level key+value
+      json_file:
+        dest: '/tmp/4.json'
+        key: 'a'
+        state: absent
+
+    - name: Remove non-existing toplevel
+      json_file:
+        dest: '/tmp/5.json'
+        key: 'b'
+        state: absent
+
+    - name: Remove second-level key+value
+      json_file:
+        dest: '/tmp/6.json'
+        key: 'c.d'
+        state: absent
+
+    - name: Remove non-existing second-level
+      json_file:
+        dest: '/tmp/7.json'
+        key: 'c.e'
+        state: absent
+
+    - name: Add different types
+      json_file:
+        dest: '/tmp/8.json'
+        key: '{{ item.key }}'
+        value: '{{ item.value }}'
+      with_items:
+        - { 'key': 'integer', 'value': 25 }
+        - { 'key': 'bool1', 'value': true }
+        - { 'key': 'bool2', 'value': false }
+        - { 'key': 'should_be_null', 'value': None }
+
+    - name: Add dotted key-names
+      json_file:
+        dest: '/tmp/9.json'
+        key: '{{ item.key }}'
+        value: '{{ item.value }}'
+      with_items:
+        - { 'key': 'a\.b', 'value': 'bar' }
+        - { 'key': 'd.a\.b', 'value': 'buzz' }
