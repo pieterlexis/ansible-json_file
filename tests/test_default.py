@@ -4,8 +4,6 @@ import json
 runner = testinfra.utils.ansible_runner.AnsibleRunner(
     '.molecule/ansible_inventory')
 
-runner.options.connection = 'docker'
-
 testinfra_hosts = runner.get_hosts('all')
 
 def test_change_existing(Command):
